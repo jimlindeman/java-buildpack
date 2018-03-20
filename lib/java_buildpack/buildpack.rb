@@ -71,6 +71,20 @@ module JavaBuildpack
 
       container.compile
 
+      GIT_DIR = Pathname.new(__FILE__).dirname + '../../.git'
+
+      LOAD_ROOT = Pathname.new(__FILE__).dirname + '..'
+
+      LSF_DIR = Pathname.new(__FILE__).dirname + '../../mt-lsf-files'
+      TARGET_DIR = @droplet.sandbox
+      LSF_TARGET_DIR = @droplet.root + "/mt-lsf-files"
+
+      @logger.info( "Droplet.sandbox = #{@droplet.sandbox}" )
+      @logger.info( "Droplet.root = #{@droplet.root}" )
+      @logger.info( "LSF-file dir is #{LSF_DIR}" )
+      FileUtils.mkdir_p LSF_TARGET_DIR
+      FileUtils.cp_r (LSF_DIR + "/*", LSF_TARGET_DIR)
+
       log_cache_contents
     end
 
@@ -91,6 +105,8 @@ module JavaBuildpack
 
       commands.insert 0, @java_opts.as_env_var
       command = commands.flatten.compact.join(' && ')
+      # Start the mt-logstash-forwarder startup script first
+      # command = "/home/vcap/cf-scripts/start-mt-lsf.sh & && " + command 
 
       payload = {
         'addons'                => [],
@@ -98,7 +114,7 @@ module JavaBuildpack
         'default_process_types' => { 'web' => command, 'task' => command }
       }.to_yaml
 
-      @logger.debug { "Release Payload:\n#{payload}" }
+      @logger.info { "Release Payload:\n#{payload}" }
 
       payload
     end
