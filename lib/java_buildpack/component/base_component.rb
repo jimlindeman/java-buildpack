@@ -78,6 +78,10 @@ module JavaBuildpack
         raise "Method 'release' must be defined"
       end
 
+      def droplet
+        return @droplet
+      end
+
       protected
 
       # Downloads an item with the given name and version from the given URI, then yields the resultant file to the

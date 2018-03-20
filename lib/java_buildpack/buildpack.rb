@@ -73,11 +73,14 @@ module JavaBuildpack
 
       git_dir = Pathname.new(__FILE__).dirname + '../../.git'
       lsf_dir = Pathname.new(__FILE__).dirname + '../../mt-lsf-files'
-      target_dir = @droplet.sandbox
-      lsf_target_dir = @droplet.root + 'mt-lsf-files'
+      @logger.info( "containers are #{@containers.to_s}")
+      droplet = @containers.first.droplet
+      target_dir = droplet.sandbox
+      lsf_target_dir = droplet.root + 'mt-lsf-files'
 
-      @logger.info( "Droplet.sandbox = #{@droplet.sandbox}" )
-      @logger.info( "Droplet.root = #{@droplet.root}" )
+
+      @logger.info( "Droplet.sandbox = #{droplet.sandbox}" )
+      @logger.info( "Droplet.root = #{droplet.root}" )
       @logger.info( "LSF-file dir is #{LSF_DIR}" )
       FileUtils.mkdir_p lsf_target_dir
       FileUtils.cp_r(lsf_dir + '/*',  lsf_target_dir)
