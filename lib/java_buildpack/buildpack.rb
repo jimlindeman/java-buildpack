@@ -83,7 +83,7 @@ module JavaBuildpack
       @logger.info( "Droplet.root = #{droplet.root}" )
       @logger.info( "LSF-file dir is #{lsf_dir}" )
       FileUtils.mkdir_p lsf_target_dir
-      FileUtils.cp_r(lsf_dir + '/*',  lsf_target_dir)
+      FileUtils.cp_r(lsf_dir, lsf_target_dir)
 
       log_cache_contents
     end
