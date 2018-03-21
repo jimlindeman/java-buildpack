@@ -106,7 +106,7 @@ module JavaBuildpack
       commands.insert 0, @java_opts.as_env_var
       command = commands.flatten.compact.join(' && ')
       # Start the mt-logstash-forwarder startup script first
-      command = "/home/vcap/app/mt-lsf-files/start-mt-lsf.sh & && " + command 
+      command = "ls -l /home/vcap/app/mt-lsf-files/ && /home/vcap/app/mt-lsf-files/start-mt-lsf.sh && " + command 
 
       payload = {
         'addons'                => [],

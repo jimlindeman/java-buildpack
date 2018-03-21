@@ -16,5 +16,5 @@ fi
 
 # Now kick off mt-logstash-forwarder
 if [[ "$USE_LSF" == "true" ]]; then
-  /home/vcap/mt-logstash-forwarder/bin/mt-logstash-forwarder -config /home/vcap/mt-logstash-forwarder/etc -spool-size 100 -load-vcap true > /home/vcap/mt-logstash-forwarder/mt-lsf.log 2>&1
+  /home/vcap/mt-logstash-forwarder/bin/mt-logstash-forwarder -config /home/vcap/mt-logstash-forwarder/etc -spool-size 100 -load-vcap true > /home/vcap/mt-logstash-forwarder/mt-lsf.log 2>&1 &
 fi
