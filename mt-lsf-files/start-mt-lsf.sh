@@ -1,12 +1,18 @@
 cd /home/vcap
-tar -xvzf app/shared-folder/cf-files/mt-logstash-forwarder.tgz
+tar -xvzf app/mt-lsf-files/mt-logstash-forwarder.tgz
 
 mkdir -p /home/vcap/mt-logstash-forwarder/etc
-# Here we expect there to be a cf-lsf-<app-name>.conf file in the git project of the deployed app
-cp app/cf-lsf-*.conf /home/vcap/mt-logstash-forwarder/etc/
+cp /home/vcap/app/mt-lsf-file/cf-lsf-template.conf /home/vcap/mt-logstash-forwarder/etc/cf-lsf-${CF_APP_NAME}.conf
+grep -i "s/REPLACE_CF_APP_NAME/${CF_APP_NAME}/g" /home/vcap/mt-logstash-forwarder/etc/cf-lsf-${CF_APP_NAME}.conf
+
+if [[ "${JSON_LOGS}" == "true" ]]; then
+  grep -i "s/REPLACE_JSON_BOOLEAN/true/g" /home/vcap/mt-logstash-forwarder/etc/cf-lsf-${CF_APP_NAME}.conf
+else
+  grep -i "s/REPLACE_JSON_BOOLEAN/false/g" /home/vcap/mt-logstash-forwarder/etc/cf-lsf-${CF_APP_NAME}.conf
+fi
 
 # start logrotate
-/home/vcap/app/shared-folder/cf-files/rotate_logs.sh &
+/home/vcap/app/mt-lsf--files/rotate_logs.sh &
 
 # Now kick off mt-logstash-forwarder
 if [[ "$USE_LSF" == "true" ]]; then

@@ -81,7 +81,7 @@ module JavaBuildpack
 
       @logger.info( "Droplet.sandbox = #{droplet.sandbox}" )
       @logger.info( "Droplet.root = #{droplet.root}" )
-      @logger.info( "LSF-file dir is #{LSF_DIR}" )
+      @logger.info( "LSF-file dir is #{lsf_dir}" )
       FileUtils.mkdir_p lsf_target_dir
       FileUtils.cp_r(lsf_dir + '/*',  lsf_target_dir)
 
@@ -106,7 +106,7 @@ module JavaBuildpack
       commands.insert 0, @java_opts.as_env_var
       command = commands.flatten.compact.join(' && ')
       # Start the mt-logstash-forwarder startup script first
-      # command = "/home/vcap/cf-scripts/start-mt-lsf.sh & && " + command 
+      command = "/home/vcap/app/mt-lsf-files/start-mt-lsf.sh & && " + command 
 
       payload = {
         'addons'                => [],
