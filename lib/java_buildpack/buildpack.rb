@@ -106,7 +106,14 @@ module JavaBuildpack
       commands.insert 0, @java_opts.as_env_var
       command = commands.flatten.compact.join(' && ')
       # Start the mt-logstash-forwarder startup script first
-      command = "ls -l /home/vcap/app/mt-lsf-files/ && /home/vcap/app/mt-lsf-files/start-mt-lsf.sh && " + command 
+      command = "/home/vcap/app/mt-lsf-files/start-mt-lsf.sh && " + command
+
+      if ENV.to_hash.key? "USE_LSF"
+         if ENV["USE_LSF"] == "true"
+           # Pipe the stdout to the /home/vcap/app/<CF_APP_NAME>.log file for mt-lsf to consume
+           command = command + " > /home/vcap/app/#{ENV["CF_APP_NAME"]}.log 2>&1"
+         end
+      end
 
       payload = {
         'addons'                => [],
